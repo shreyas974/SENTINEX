@@ -30,3 +30,24 @@ Instead of a reactive trigger, SENTINEX uses a continuous six-stage analytical p
 ```text
 [1. Observe] ──> [2. Analyze] ──> [3. Forecast] ──> [4. Assess Risk] ──> [5. Decide] ──> [6. Intervene]
    Sensors          Features          Risk Score        Uncertainty        Policy           Consent
+
+#Repository Structure
+
+SENTINEX/
+│
+├── app/                        # FastAPI Backend Application
+│   └── main.py                 # API endpoints (/health, /assess, /config)
+│
+├── docs/                       # Technical Documentation
+│   ├── API_CONTRACT.md         # Request/Response schemas
+│   └── DEPLOYMENT_GUIDE.md     # LinuxONE deployment steps
+│
+├── src/                        # Source Code
+│   ├── monitoring/             # Audit logging configuration
+│   ├── decision/               # Decision engine & policy rules
+│   └── data/                   # Validation & preprocessing
+│
+├── data/                       # Dataset Storage
+│   └── synthetic/              # SMSD (Synthetic Multimodal Safety Data)
+│
+└── NEXGUARD_AI.ipynb           # Baseline ML model & evaluation notebook
