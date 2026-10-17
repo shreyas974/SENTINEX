@@ -54,7 +54,7 @@ Development	JupyterLab, Git
 
 📂 Repository Structure
 
-text
+```text
 SENTINEX/
 │
 ├── app/                        # FastAPI Backend Application
@@ -73,6 +73,7 @@ SENTINEX/
 │   └── synthetic/              # SMSD (Synthetic Multimodal Safety Data)
 │
 └── NEXGUARD_AI.ipynb           # Baseline ML model & evaluation notebook
+```
 
 🚀 Quick Start (LinuxONE Environment)
 
