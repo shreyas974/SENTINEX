@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENTINEX | AI Risk Monitor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>SENTINEX</h1>
+        <p>AI-Powered Risk and Anomaly Monitoring</p>
+    </header>
+
+    <nav>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#monitor">Monitoring</a>
+        <a href="#alerts">Alerts</a>
+    </nav>
+
+    <main id="dashboard">
+        <h2>Security Dashboard</h2>
+
+        <section class="cards">
+            <div class="card">
+                <h3>System Status</h3>
+                <p class="value safe" id="systemStatus">Normal</p>
+            </div>
+
+            <div class="card">
+                <h3>Risk Score</h3>
+                <p class="value" id="riskScore">12%</p>
+            </div>
+
+            <div class="card">
+                <h3>Anomaly Alerts</h3>
+                <p class="value" id="alertCount">0</p>
+            </div>
+        </section>
+
+        <section class="panel" id="monitor">
+            <h2>Anomaly Score Monitoring</h2>
+            <canvas id="riskChart" height="220"></canvas>
+            <button id="simulateButton">Simulate New Event</button>
+        </section>
+
+        <section class="panel" id="alerts">
+            <h2>Recent Alerts</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Event</th>
+                        <th>Risk</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="alertTable">
+                    <tr>
+                        <td colspan="4">No alerts yet</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>SENTINEX | AI Risk Monitoring Prototype</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
