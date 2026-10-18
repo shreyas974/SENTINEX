@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SENTINEX — Competition Demonstration Video Player</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --primary: #1d6cf0;
+      --primary-light: #60a5fa;
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      font-size: 15px;
+      padding-bottom: 60px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0b1528 0%, #030712 100%);
+      border-bottom: 1px solid #1e293b;
+      padding: 30px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .brand-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: var(--primary-light);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .badge-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: rgba(29, 108, 240, 0.15);
+      border: 1px solid rgba(29, 108, 240, 0.4);
+      color: #93c5fd;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge.success {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #6ee7b7;
+    }
+
+    .main-layout {
+      max-width: 1400px;
+      margin: 30px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Video Frame */
+    .video-card {
+      background: #000000;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
+    }
+    .video-viewport {
+      width: 100%;
+      background: #000000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .video-viewport img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+    .video-toolbar {
+      background: #0f172a;
+      border-top: 1px solid #1e293b;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .video-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .video-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .btn-action {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    .btn-action:hover {
+      background: #2563eb;
+    }
+
+    /* Sidebar Timeline */
+    .timeline-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card-heading {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.3px;
+    }
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .timeline-item {
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      border-left: 3px solid var(--primary);
+      transition: background 0.2s;
+    }
+    .timeline-item:hover {
+      background: rgba(29, 108, 240, 0.1);
+    }
+    .timeline-time {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--primary-light);
+      margin-bottom: 4px;
+    }
+    .timeline-step {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+    .timeline-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Quick Links Box */
+    .links-box {
+      margin-top: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .link-btn {
+      color: #93c5fd;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .link-btn:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div>
+        <div class="brand-title">SENTINEX: Live Demonstration Video</div>
+        <div class="brand-sub">IBM Z Datathon 2026 &bull; Production Prototype Walkthrough</div>
+      </div>
+      <div class="badge-bar">
+        <span class="badge success">&#9679; Live System Verified</span>
+        <span class="badge">IBM LinuxONE (s390x)</span>
+        <span class="badge">Latency: 10.84 ms</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    
+    <!-- Video Player Frame -->
+    <div class="video-card">
+      <div class="video-viewport">
+        <img src="SENTINEX_Competition_Demo.webp" alt="SENTINEX Competition Live Demonstration Recording">
+      </div>
+      <div class="video-toolbar">
+        <div>
+          <div class="video-title">Full Production System Demonstration (s390x Native)</div>
+          <div class="video-sub">Includes Multimodal 60FPS Streaming, Conformal Bounds, Acute Distress Injection, and SHA-256 Ledger</div>
+        </div>
+        <div>
+          <a href="SENTINEX_Competition_Demo.webp" download class="btn-action">&#11015; Download Video File (.webp)</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline Commentary -->
+    <div class="timeline-card">
+      <div class="card-heading">Demonstration Timeline &amp; Key Highlights</div>
+      
+      <div class="timeline-list">
+        
+        <div class="timeline-item">
+          <div class="timeline-time">PHASE 01 &bull; 00:00 - 00:08</div>
+          <div class="timeline-step">Hardware Health &amp; Regulatory Status</div>
+          <div class="timeline-desc">Showcases live connection to IBM LinuxONE (s390x) backend, sub-15ms latency (10.84ms), EU AI Act High-Risk verification, and GDPR Article 9 affirmative consent state.</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-step">PHASE 02 &bull; 00:08 - 00:20</div>
+          <div class="timeline-time">60 FPS Sensor Waveforms</div>
+          <div class="timeline-desc">Continuous streaming visualization of Triaxial Kinematics (gait/accel), Cardiac ECG Rhythms (BPM), and Acoustic Distress Analyzer waveforms in nominal state (zero false alarms).</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">PHASE 03 &bull; 00:20 - 00:32</div>
+          <div class="timeline-step">Conformal Uncertainty Intervals</div>
+          <div class="timeline-desc">Mathematical confidence boundaries [R_lower, R_upper] calibrated via finite-sample quantile cutoff (q = -0.0212), proving distribution-free false alarm suppression.</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-step">PHASE 04 &bull; 00:32 - 00:48</div>
+          <div class="timeline-step">Acute Distress Injection Reaction</div>
+          <div class="timeline-desc">Simulated syncope/fall: 6.8g physical impact and tachycardia surge trigger instant dual-engine consensus, surging risk score to 0.941 and escalating to CRITICAL.</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">PHASE 05 &bull; 00:48 - 01:10</div>
+          <div class="timeline-step">SHA-256 Cryptographic Audit Ledger</div>
+          <div class="timeline-desc">Opens the forensic audit modal showing tamper-evident Merkle block chains, SHA-256 hashes, deterministic attribution vectors, and GDPR consent verification proofs.</div>
+        </div>
+
+      </div>
+
+      <div class="links-box">
+        <div style="font-size:12px; font-weight:700; color:#ffffff; margin-bottom:4px;">Related Competition Submissions:</div>
+        <a class="link-btn" href="SENTINEX_5Min_Master_Demo_Player.html" style="background:var(--primary);color:#fff;border-color:transparent;">&#9658; Open 5-Minute Master Video Demonstration</a>
+        <a class="link-btn" href="SENTINEX_IBM_Pitch_Deck.pptx">&#128202; Open Pitch Deck (.pptx)</a>
+        <a class="link-btn" href="SENTINEX_Complete_Project_Work_and_Training_Report.html">&#127760; Master Project &amp; Training Report (HTML)</a>
+        <a class="link-btn" href="SENTINEX_Comprehensive_Project_Work_and_Training_Report.md">&#128221; Master Documentation (.md)</a>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

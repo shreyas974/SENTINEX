@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SENTINEX — IBM Z Datathon 2026 Master Demonstration & Public Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070b14;
+      --card-bg: #0d1527;
+      --card-border: #1e293b;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --primary: #0f62fe;
+      --primary-light: #60a5fa;
+      --accent-cyan: #00d3f9;
+      --accent-green: #24a148;
+      --accent-purple: #a855f7;
+      --accent-amber: #f59e0b;
+      --accent-red: #da1e28;
+      --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      font-size: 14px;
+      padding-bottom: 60px;
+    }
+
+    /* Top Navigation */
+    header {
+      background: linear-gradient(135deg, #0b1528 0%, #030712 100%);
+      border-bottom: 1px solid #1e293b;
+      padding: 16px 28px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+    }
+    .header-inner {
+      max-width: 1560px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .brand-title {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: var(--primary-light);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .badge-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: rgba(15, 98, 254, 0.15);
+      border: 1px solid rgba(15, 98, 254, 0.4);
+      color: #93c5fd;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge.success {
+      background: rgba(36, 161, 72, 0.15);
+      border-color: rgba(36, 161, 72, 0.4);
+      color: #6ee7b7;
+    }
+    .badge.indian {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: #fde68a;
+    }
+    .badge.purple {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: rgba(168, 85, 247, 0.4);
+      color: #d8b4fe;
+    }
+
+    /* Public Mode Toggle Bar */
+    .mode-switch-bar {
+      max-width: 1560px;
+      margin: 18px auto 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .mode-toggle-group {
+      display: flex;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 3px;
+    }
+    .mode-btn {
+      padding: 8px 16px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .mode-btn.active {
+      color: #ffffff;
+      background: var(--primary);
+      box-shadow: 0 2px 8px rgba(15, 98, 254, 0.4);
+    }
+
+    /* Main Grid */
+    .main-grid {
+      max-width: 1560px;
+      margin: 18px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 450px;
+      gap: 26px;
+    }
+
+    @media (max-width: 1260px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Video Player Card */
+    .player-card {
+      background: #000000;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+    }
+    .video-viewport-wrapper {
+      position: relative;
+      width: 100%;
+      background: #000000;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    #demoCanvas {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: #000000;
+      cursor: pointer;
+    }
+    #prototypeVideoImg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: none;
+      background: #000000;
+    }
+
+    /* Instant Welcome Overlay (Judges / Public Launch Modal) */
+    .welcome-modal-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, rgba(15, 23, 42, 0.88) 0%, rgba(3, 7, 18, 0.97) 100%);
+      backdrop-filter: blur(8px);
+      z-index: 50;
+      text-align: center;
+      padding: 30px;
+      transition: opacity 0.3s ease;
+    }
+    .welcome-modal-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .welcome-card {
+      max-width: 620px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 36px 32px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .welcome-badge {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fde68a;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+    }
+    .welcome-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .welcome-sub {
+      font-size: 13.5px;
+      color: #94a3b8;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .launch-btn {
+      background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+      color: #ffffff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 9999px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 0 35px rgba(15, 98, 254, 0.8);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .launch-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 50px rgba(15, 98, 254, 1);
+    }
+    .welcome-note {
+      margin-top: 14px;
+      font-size: 11.5px;
+      color: #64748b;
+    }
+
+    /* Video Center Overlay (Play button on pause) */
+    .center-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(5px);
+      cursor: pointer;
+      transition: opacity 0.25s ease;
+      z-index: 10;
+    }
+    .center-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .big-play-btn {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 50px rgba(15, 98, 254, 0.85);
+      border: 3px solid rgba(255, 255, 255, 0.35);
+      font-size: 36px;
+      padding-left: 6px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .center-overlay:hover .big-play-btn {
+      transform: scale(1.08);
+      box-shadow: 0 0 70px rgba(15, 98, 254, 1);
+    }
+    .play-caption {
+      margin-top: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+    }
+    .play-subcaption {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--primary-light);
+      font-weight: 500;
+    }
+
+    /* Video Control Bar */
+    .controls-bar {
+      background: #0a0f1d;
+      border-top: 1px solid #1e293b;
+      padding: 12px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      user-select: none;
+    }
+
+    /* Progress Scrubber */
+    .scrubber-container {
+      position: relative;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .scrubber-track {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      background: #1e293b;
+      border-radius: 3px;
+      overflow: hidden;
+      transition: height 0.15s;
+    }
+    .scrubber-container:hover .scrubber-track {
+      height: 8px;
+    }
+    .scrubber-progress {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent-cyan) 100%);
+      border-radius: 3px;
+      pointer-events: none;
+    }
+    .scrubber-handle {
+      position: absolute;
+      top: 50%;
+      left: 0%;
+      width: 14px;
+      height: 14px;
+      background: #ffffff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px rgba(0, 211, 249, 0.8);
+      opacity: 0;
+      transition: opacity 0.15s, transform 0.1s;
+      pointer-events: none;
+    }
+    .scrubber-container:hover .scrubber-handle {
+      opacity: 1;
+    }
+
+    /* Transport Controls Row */
+    .transport-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .left-controls, .right-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .ctrl-btn {
+      background: transparent;
+      border: none;
+      color: #e2e8f0;
+      font-size: 15px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .ctrl-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+    .ctrl-btn.active {
+      color: var(--accent-cyan);
+      background: rgba(0, 211, 249, 0.15);
+    }
+    .time-display {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-light);
+      margin-left: 6px;
+    }
+
+    .speed-select {
+      background: #111827;
+      border: 1px solid #334155;
+      color: #ffffff;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+    }
+
+    /* Subtitle Caption Banner */
+    .caption-banner {
+      background: #030712;
+      border-top: 1px solid #1e293b;
+      padding: 14px 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      min-height: 56px;
+    }
+    .caption-icon {
+      color: var(--accent-cyan);
+      font-size: 15px;
+      margin-top: 2px;
+    }
+    .caption-content {
+      flex: 1;
+    }
+    .caption-meta {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .caption-text {
+      font-size: 13.5px;
+      color: #e2e8f0;
+      line-height: 1.55;
+      font-weight: 400;
+    }
+
+    /* Player Toolbar */
+    .player-toolbar {
+      background: #0f172a;
+      border-top: 1px solid #1e293b;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .video-meta-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .video-meta-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: #0353e9; transform: translateY(-1px); }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+      border: 1px solid #334155;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: #64748b;
+    }
+
+    /* Right Sidebar */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* Voice Studio Box */
+    .studio-box {
+      background: linear-gradient(135deg, #131b2e 0%, #0c1222 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .box-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .waveform-indicator {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 16px;
+    }
+    .bar {
+      width: 3px;
+      height: 4px;
+      background: var(--accent-amber);
+      border-radius: 2px;
+      transition: height 0.1s;
+    }
+    .waveform-indicator.active .bar:nth-child(1) { animation: bounce 0.6s infinite 0.1s; }
+    .waveform-indicator.active .bar:nth-child(2) { animation: bounce 0.6s infinite 0.3s; }
+    .waveform-indicator.active .bar:nth-child(3) { animation: bounce 0.6s infinite 0.2s; }
+    .waveform-indicator.active .bar:nth-child(4) { animation: bounce 0.6s infinite 0.4s; }
+    @keyframes bounce {
+      0%, 100% { height: 4px; }
+      50% { height: 16px; }
+    }
+
+    .voice-control-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .studio-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+    .studio-select {
+      width: 100%;
+      background: #030712;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 12px;
+      color: #ffffff;
+      outline: none;
+    }
+    .voice-btn-bar {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .voice-btn {
+      flex: 1;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      background: var(--primary);
+      color: #ffffff;
+      transition: background 0.15s;
+    }
+    .voice-btn:hover { background: #0353e9; }
+    .voice-btn.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid #334155;
+      color: #e2e8f0;
+    }
+    .voice-btn.secondary:hover { background: rgba(255, 255, 255, 0.14); }
+
+    /* Tabs for Chapters vs Teleprompter Script */
+    .tab-header {
+      display: flex;
+      border-bottom: 1px solid var(--card-border);
+      background: #0a0f1d;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .tab-btn.active {
+      color: #ffffff;
+      background: var(--card-bg);
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .tab-panel {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      padding: 16px;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+    .tab-panel.active { display: block; }
+
+    /* Chapter List */
+    .chapter-scroll {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .chapter-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-left: 3px solid var(--primary);
+      border-radius: 6px;
+      padding: 9px 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chapter-item:hover {
+      background: rgba(15, 98, 254, 0.08);
+      border-color: rgba(15, 98, 254, 0.25);
+    }
+    .chapter-item.active {
+      background: rgba(15, 98, 254, 0.18);
+      border-color: rgba(15, 98, 254, 0.4);
+      border-left-color: var(--accent-cyan);
+    }
+    .chap-time {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--primary-light);
+    }
+    .chap-title {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-top: 1px;
+    }
+    .chap-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+
+    /* Teleprompter Script Tab */
+    .teleprompter-box {
+      font-size: 13.5px;
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+    .script-scene-block {
+      padding: 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.02);
+      margin-bottom: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.2s;
+    }
+    .script-scene-block.active {
+      background: rgba(15, 98, 254, 0.12);
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(15, 98, 254, 0.2);
+    }
+    .script-header {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Links Card */
+    .links-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .link-item {
+      color: #93c5fd;
+      text-decoration: none;
+      font-size: 12.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .link-item:hover { text-decoration: underline; color: #ffffff; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="header-inner">
+      <div>
+        <div class="brand-title">
+          <span>&#9889;</span>
+          SENTINEX: Public Competition Demonstration Showcase
+        </div>
+        <div class="brand-sub">IBM Z Datathon 2026 &bull; Theme 1: Real-Time AI for Critical Decisions &bull; Team NEUROBOTS</div>
+      </div>
+      <div class="badge-bar">
+        <span class="badge indian">&#127470;&#127475; Indian Student Voice Active</span>
+        <span class="badge success">&#10003; 100% Slide-to-Audio Match</span>
+        <span class="badge">IBM LinuxONE (s390x)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Public Mode Toggle Bar -->
+  <div class="mode-switch-bar">
+    <div class="mode-toggle-group">
+      <button class="mode-btn active" id="btnModeMaster" onclick="switchVideoMode('master')">
+        <span>&#127916;</span> 5-Min Master Video Demonstration (12 Slides + Labs + Demo)
+      </button>
+      <button class="mode-btn" id="btnModePrototype" onclick="switchVideoMode('prototype')">
+        <span>&#128308;</span> Live Prototype Screen Recording (.webp)
+      </button>
+    </div>
+    <div style="font-size:12px; color:var(--text-muted); font-family:var(--font-mono);">
+      PUBLIC SHOWCASE &bull; REPOSITORY ROOT READY
+    </div>
+  </div>
+
+  <div class="main-grid">
+    
+    <!-- LEFT: Video Player Card -->
+    <div class="player-card">
+      
+      <!-- Video Viewport -->
+      <div class="video-viewport-wrapper" id="viewportWrapper">
+        <canvas id="demoCanvas" width="1280" height="720"></canvas>
+        <img id="prototypeVideoImg" src="assets/SENTINEX_Competition_Demo.webp" alt="SENTINEX Prototype Demonstration">
+        
+        <!-- Public Welcome Launch Modal (Unlocks Audio on First Gesture) -->
+        <div class="welcome-modal-overlay" id="welcomeOverlay">
+          <div class="welcome-card">
+            <div class="welcome-badge">&#127470;&#127475; IBM Z DATATHON 2026 &bull; TEAM NEUROBOTS</div>
+            <div class="welcome-title">SENTINEX: Public Demonstration</div>
+            <div class="welcome-sub">
+              Welcome, esteemed judges, mentors, and guests! Experience our complete 5-minute technical walkthrough powered by Indian student voiceover narration running natively on IBM LinuxONE s390x.
+            </div>
+            <button class="launch-btn" onclick="startPublicDemo()">
+              <span>&#9658;</span> Watch 5-Minute Competition Demonstration
+            </button>
+            <div class="welcome-note">&#10003; Sub-15ms Latency &bull; Conformal Quantile Math &bull; 53/53 Unit Tests Passed</div>
+          </div>
+        </div>
+
+        <!-- Video Center Overlay (Play button on pause) -->
+        <div class="center-overlay hidden" id="centerOverlay" onclick="togglePlay()">
+          <div class="big-play-btn" id="overlayBtnIcon">&#9658;</div>
+          <div class="play-caption">Play Demonstration (Indian Student Presenter)</div>
+          <div class="play-subcaption">Complete Walkthrough: 12-Slide Pitch Deck &bull; LinuxONE Labs &bull; Live Telemetry Demo</div>
+        </div>
+      </div>
+
+      <!-- Video Control Bar -->
+      <div class="controls-bar">
+        
+        <!-- Scrubbing Timeline -->
+        <div class="scrubber-container" id="scrubberContainer">
+          <div class="scrubber-track">
+            <div class="scrubber-progress" id="scrubberProgress"></div>
+          </div>
+          <div class="scrubber-handle" id="scrubberHandle"></div>
+        </div>
+
+        <!-- Controls Row -->
+        <div class="transport-row">
+          
+          <div class="left-controls">
+            <!-- Play/Pause -->
+            <button class="ctrl-btn" id="playBtn" onclick="togglePlay()" title="Play/Pause (Space)">
+              <span id="playIcon">&#9658;</span>
+            </button>
+            
+            <!-- Skip Backward 10s -->
+            <button class="ctrl-btn" onclick="skip(-10)" title="Back 10s">&#8630; 10s</button>
+            
+            <!-- Skip Forward 10s -->
+            <button class="ctrl-btn" onclick="skip(10)" title="Forward 10s">10s &#8631;</button>
+
+            <!-- Time Display -->
+            <div class="time-display" id="timeDisplay">00:00 / 05:00</div>
+          </div>
+
+          <div class="right-controls">
+            <!-- Voice Narration Toggle -->
+            <button class="ctrl-btn active" id="voiceToggleBtn" onclick="toggleVoice()" title="Toggle Spoken Voiceover Narration">
+              <span id="voiceIcon">&#128266;</span> Student Voice
+            </button>
+
+            <!-- Replay Voice for Scene -->
+            <button class="ctrl-btn" onclick="replayCurrentVoice()" title="Replay Narration for Current Scene">
+              &#8634; Re-speak
+            </button>
+
+            <!-- Sound FX Toggle -->
+            <button class="ctrl-btn active" id="sfxToggleBtn" onclick="toggleSFX()" title="Toggle Dynamic Sound Effects (ECG, Alarms)">
+              <span>&#128276;</span> SFX
+            </button>
+
+            <!-- Speed Selector -->
+            <select class="speed-select" id="speedSelect" onchange="changeSpeed(this.value)">
+              <option value="0.75">0.75x</option>
+              <option value="1.0" selected>1.0x Normal</option>
+              <option value="1.25">1.25x</option>
+              <option value="1.5">1.5x</option>
+              <option value="2.0">2.0x Fast</option>
+            </select>
+
+            <!-- Fullscreen -->
+            <button class="ctrl-btn" onclick="toggleFullscreen()" title="Fullscreen (F)">
+              &#x26F6;
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Synchronized Subtitle Banner -->
+      <div class="caption-banner">
+        <span class="caption-icon">&#128227;</span>
+        <div class="caption-content">
+          <div class="caption-meta" id="captionMeta">SLIDE 01 &bull; TITLE &amp; MISSION (00:00 - 00:12)</div>
+          <div class="caption-text" id="captionText">
+            Respected judges and mentors, a very warm welcome to our presentation for the IBM Z Datathon 2026! I am presenting on behalf of Team NEUROBOTS under Theme 1: Real-Time AI for Critical Decisions. Our project, SENTINEX, is an industrial AI safety intelligence and risk governance platform, engineered from scratch to run natively on IBM LinuxONE s390x mainframes.
+          </div>
+        </div>
+      </div>
+
+      <!-- Player Toolbar & Export Options -->
+      <div class="player-toolbar">
+        <div>
+          <div class="video-meta-title">SENTINEX: Public Competition Demonstration Hub</div>
+          <div class="video-meta-sub">High Definition 1080p &bull; Indian Student Presentation &bull; LinuxONE Community Cloud Verified</div>
+        </div>
+        <div class="btn-group">
+          <a class="btn-primary" href="assets/SENTINEX_Competition_Demo.webp" download>
+            &#128253; Download Video (.webp)
+          </a>
+          <button class="btn-secondary" onclick="exportVideoRecording()" id="exportBtn">
+            &#128190; Record &amp; Export (.webm)
+          </button>
+          <button class="btn-secondary" onclick="restartVideo()">
+            &#8634; Replay from 00:00
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Voice Studio, Tabs & Timeline -->
+    <div class="sidebar">
+
+      <!-- Voice Narration Studio Box -->
+      <div class="studio-box">
+        <div class="box-header">
+          <div class="box-title">
+            <span>&#127897;</span> Indian Student Voice Engine
+          </div>
+          <div class="waveform-indicator" id="waveformIndicator">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+        </div>
+        
+        <div style="font-size:12px; color:var(--text-muted); line-height:1.4;">
+          Configured with enthusiastic, articulate Indian English voice cadence (<span style="color:#fde68a; font-weight:600;">en-IN</span>) addressing the IBM Z Datathon jury.
+        </div>
+
+        <div class="voice-control-grid">
+          <div>
+            <label class="studio-label">Student Voice (en-IN):</label>
+            <select class="studio-select" id="voiceSelect" onchange="onVoiceChange()">
+              <option value="indian_default">&#127470;&#127475; Indian Student Voice (Default)</option>
+            </select>
+          </div>
+          <div>
+            <label class="studio-label">Pacing &amp; Cadence:</label>
+            <select class="studio-select" id="speechRateSelect" onchange="onRateChange(this.value)">
+              <option value="0.95">0.95x (Paced Student)</option>
+              <option value="1.05" selected>1.05x (Enthusiastic Student)</option>
+              <option value="1.15">1.15x (Dynamic Pitch)</option>
+              <option value="1.25">1.25x (Fast Walkthrough)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="voice-btn-bar">
+          <button class="voice-btn" onclick="testVoiceSample()">
+            &#9658; Test Student Voice
+          </button>
+          <button class="voice-btn secondary" onclick="jumpTo(234); playAcuteDistressSFX();">
+            &#9888; Acute Distress Demo (03:54)
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Container: Chapters vs Presenter Script -->
+      <div>
+        <div class="tab-header">
+          <button class="tab-btn active" id="tabChaptersBtn" onclick="switchTab('chapters')">
+            &#128196; Chapter Index (21 Scenes)
+          </button>
+          <button class="tab-btn" id="tabScriptBtn" onclick="switchTab('script')">
+            &#128221; Presenter Speech Transcript
+          </button>
+        </div>
+
+        <!-- Tab 1: Chapter Index -->
+        <div class="tab-panel active" id="tabChapters">
+          <div class="chapter-scroll" id="chapterList">
+            <!-- Populated via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Tab 2: Presenter Script -->
+        <div class="tab-panel" id="tabScript">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span style="font-size:12px; font-weight:700; color:#ffffff;">Full Student Presentation Transcript</span>
+            <button class="ctrl-btn" onclick="copyFullScript()" style="font-size:11px; padding:4px 8px; background:rgba(255,255,255,0.06);">
+              &#128203; Copy Transcript
+            </button>
+          </div>
+          <div class="teleprompter-box" id="teleprompterList">
+            <!-- Populated via JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Project Quick Resources -->
+      <div class="links-card">
+        <div style="font-size:12px; font-weight:700; color:#ffffff;">Public Competition Resources:</div>
+        <a class="link-item" href="pitch_deck.html" target="_blank">&#128202; Executive Pitch Deck (12 Slides HTML)</a>
+        <a class="link-item" href="SENTINEX%20%E2%80%94%20IBM%20Z%20Datathon%202026%20Pitch%20Deck.pdf" target="_blank">&#128196; Pitch Deck Presentation (.pdf)</a>
+        <a class="link-item" href="SENTINEX_IBM_Pitch_Deck.pptx">&#128202; PowerPoint Presentation (.pptx)</a>
+        <a class="link-item" href="SENTINEX_Complete_Project_Work_and_Training_Report.html" target="_blank">&#127760; Engineering &amp; Training Report (A to Z)</a>
+        <a class="link-item" href="TEAM_GUIDEBOOK.md" target="_blank">&#128214; Team Guidebook &amp; s390x Setup Reference</a>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    /* =====================================================================
+       SENTINEX 5-MINUTE EXACT 1-TO-1 SCRIPT (INDIAN STUDENT COMPETITION PRESENTATION)
+       Total Duration: Exactly 300 seconds (5 min 00 sec)
+       Voice: Enthusiastic Indian engineering student presenting to IBM Datathon judges.
+       ===================================================================== */
+    const SCENES = [
+      /* PART 1: EXECUTIVE PITCH DECK (SLIDES 1 TO 12) */
+      {
+        id: 1,
+        time: 0,
+        title: "Slide 1: Cover — SENTINEX on IBM LinuxONE",
+        badge: "PART 1 • PITCH SLIDE 1",
+        desc: "Multimodal Industrial AI for Real-Time Risk Forecasting on LinuxONE s390x.",
+        image: "assets/slide_01.png",
+        script: "Respected judges and mentors, a very warm welcome to our presentation for the IBM Z Datathon 2026! I am presenting on behalf of Team NEUROBOTS under Theme 1: Real-Time AI for Critical Decisions. Our project, SENTINEX, is an industrial AI safety intelligence and risk governance platform, engineered from scratch to run natively on IBM LinuxONE s390x mainframes."
+      },
+      {
+        id: 2,
+        time: 12,
+        title: "Slide 2: The Critical Problem — False Alarms",
+        badge: "PART 1 • PITCH SLIDE 2",
+        desc: "The life-safety dilemma: Alarm fatigue, panic button failure, and cloud privacy risk.",
+        image: "assets/slide_02.png",
+        script: "Respected jury, on slide two, we highlight the core problem that motivated our project. When we analyzed industrial wearable devices, we found a shocking truth: more than 72% of automated alerts are false alarms! This leads to terrible alert fatigue where workers simply turn off their devices. Also, panic buttons fail when a worker is unconscious, and sending raw biometric data to the cloud causes huge privacy and latency issues."
+      },
+      {
+        id: 3,
+        time: 24,
+        title: "Slide 3: The SENTINEX Paradigm",
+        badge: "PART 1 • PITCH SLIDE 3",
+        desc: "Edge-to-Mainframe privacy-first safety intelligence: Anticipate and act.",
+        image: "assets/slide_03.png",
+        script: "To solve this, slide three shows our architectural vision: an Edge-to-Mainframe safety platform. Our team motto is: Anticipate the risk; act before it escalates! We have built four foundational pillars: a dual-engine AI core, deterministic physical safety overrides, real-time sensor drift monitoring, and a cryptographic SHA-256 audit ledger."
+      },
+      {
+        id: 4,
+        time: 36,
+        title: "Slide 4: Industrial Dual-Engine ML Core",
+        badge: "PART 1 • PITCH SLIDE 4",
+        desc: "Unsupervised Conformal Isolation Forest fused with HistGradientBoosting.",
+        image: "assets/slide_04.png",
+        script: "Coming to slide four, this is our dual-engine machine learning architecture. Engine 1 is an unsupervised Conformal Isolation Forest with a mathematically calibrated threshold of q-hat equals negative 0.0212. Engine 2 is a supervised HistGradientBoosting sequence forecaster. We fuse both models on LinuxONE to generate tight, calibrated uncertainty intervals."
+      },
+      {
+        id: 5,
+        time: 48,
+        title: "Slide 5: Real-Time PSI Drift Monitor",
+        badge: "PART 1 • PITCH SLIDE 5",
+        desc: "Empirical Bayes Laplace-smoothed Population Stability Index across W=100.",
+        image: "assets/slide_05.png",
+        script: "On slide five, we tackle sensor degradation using a real-time Population Stability Index monitor. As student researchers, we applied empirical Bayes Laplace smoothing over a sliding window of 100 observations. If sensor drift goes above 0.25, our system automatically flags a critical domain shift and triggers model recalibration."
+      },
+      {
+        id: 6,
+        time: 60,
+        title: "Slide 6: Deterministic Overrides & GDPR",
+        badge: "PART 1 • PITCH SLIDE 6",
+        desc: "Hard physical guardrails: HR > 175 BPM, Impact > 3.5g, and GDPR Article 9.",
+        image: "assets/slide_06.png",
+        script: "Slide six covers our safety ethics and guardrails. We realized AI alone cannot hold unconstrained authority over human life. So we added hard deterministic overrides: if heart rate crosses 175 BPM or drops below 35 BPM, or if there is an impact above 3.5, the risk is instantly locked to 1.0! For non-critical alerts, we strictly follow GDPR Article 9 consent gating."
+      },
+      {
+        id: 7,
+        time: 72,
+        title: "Slide 7: Why IBM LinuxONE (s390x)?",
+        badge: "PART 1 • PITCH SLIDE 7",
+        desc: "Sub-15ms inference, pervasive confidential computing, and five-nines uptime.",
+        image: "assets/slide_07.png",
+        script: "On slide seven: why did we choose IBM LinuxONE? For us, working on the s390x architecture was an incredible learning experience! LinuxONE delivers sub-15-millisecond deterministic execution with zero expensive GPUs, offers IBM Secure Execution for confidential biometric computing, and gives unmatched enterprise uptime."
+      },
+      {
+        id: 8,
+        time: 84,
+        title: "Slide 8: Cryptographic Audit Ledger",
+        badge: "PART 1 • PITCH SLIDE 8",
+        desc: "SHA-256 hash-chained block ledger for EU AI Act High-Risk compliance.",
+        image: "assets/slide_08.png",
+        script: "Slide eight highlights our compliance engine. To satisfy the EU AI Act High-Risk AI mandates, our backend generates a SHA-256 hash-chained block ledger. Every single inference, sensor attribution, and worker consent status is cryptographically chained, allowing instant tamper detection in linear time."
+      },
+      {
+        id: 9,
+        time: 96,
+        title: "Slide 9: Rigorous Mainframe Benchmarking",
+        badge: "PART 1 • PITCH SLIDE 9",
+        desc: "All 53 unit tests passed in 2.16s; 10.84ms end-to-end latency on s390x.",
+        image: "assets/slide_09.png",
+        script: "Slide nine shows our benchmarking results on the LinuxONE Community Cloud. We were so excited to see that all 53 of our automated unit tests passed in just 2.16 seconds! Our end-to-end processing latency is just 10.84 milliseconds—well within our 20 millisecond budget—with a 98.4% false positive rejection rate."
+      },
+      {
+        id: 10,
+        time: 108,
+        title: "Slide 10: Enterprise Web Application",
+        badge: "PART 1 • PITCH SLIDE 10",
+        desc: "Live dashboard on port 3000 connected to s390x FastAPI backend.",
+        image: "assets/slide_10.png",
+        script: "On slide ten, we present our enterprise web prototype running on port 3000, connected live to our s390x FastAPI backend. We built an interactive scenario player where judges can test normal walking, gradual drift escalation, and acute distress modes in real time."
+      },
+      {
+        id: 11,
+        time: 120,
+        title: "Slide 11: Live Audit Verification Demo",
+        badge: "PART 1 • PITCH SLIDE 11",
+        desc: "Provenance fingerprint 3ab4e534d934ccd1 and one-click tamper simulation.",
+        image: "assets/slide_11.png",
+        script: "Slide eleven demonstrates our cryptographic audit modal. Here, compliance officers can inspect recent block hashes, check our global provenance fingerprint 3ab4e534d934ccd1, and even test simulated tamper attacks to see our verification system catch invalid hashes live!"
+      },
+      {
+        id: 12,
+        time: 132,
+        title: "Slide 12: Market Impact & IBM Z Roadmap",
+        badge: "PART 1 • PITCH SLIDE 12",
+        desc: "53M lone workers, z/OS ML pipelines, and on-chip Telum AI acceleration.",
+        image: "assets/slide_12.png",
+        script: "Concluding our pitch deck on slide twelve: over 53 million industrial lone workers worldwide can benefit from SENTINEX. In our roadmap, we plan to integrate IBM Machine Learning for z/OS and leverage the on-chip Telum AI accelerator for sub-millisecond inference."
+      },
+
+      /* PART 2: DEEP TECHNICAL MAINFRAME LABS */
+      {
+        id: 13,
+        time: 144,
+        title: "7-Lab Industrial AI Pipeline Roadmap",
+        badge: "PART 2 • LAB PIPELINE",
+        desc: "Lab 1 Preprocessing to Lab 7 MCP Dispatch executed on s390x.",
+        image: "assets/labs_diagram.png",
+        script: "Now, respected judges, let us dive into our technical lab pipeline on LinuxONE. As students, we systematically divided our research across 7 structured labs: from rolling Z-score preprocessing in Lab 1, to conformal prediction in Lab 2, model zoo benchmarking in Lab 3, explainability in Lab 4, GDPR gating in Lab 5, deterministic safety SOP synthesis in Lab 6, and MCP tool dispatch in Lab 7."
+      },
+      {
+        id: 14,
+        time: 162,
+        title: "Mathematical Conformal Calibration",
+        badge: "PART 2 • CONFORMAL MATH",
+        desc: "Split Conformal Prediction: q̂ = -0.0212 bounding false alarms < 5%.",
+        image: "assets/conformal_concept.png",
+        script: "Here on screen is the core mathematics from Lab 2. Using Split Conformal Prediction, we don't assume any Gaussian distribution. By calculating non-conformity scores on calibration sets, we compute our finite-sample quantile cutoff at negative 0.0212. This gives us a provable mathematical guarantee that false alarms stay below 5%."
+      },
+      {
+        id: 15,
+        time: 180,
+        title: "Dual-Engine Training Loss Convergence",
+        badge: "PART 2 • CONVERGENCE",
+        desc: "50 Epochs on LinuxONE s390x: validation loss stabilizes at 0.041.",
+        image: "assets/chart_training_convergence.png",
+        script: "These are our training convergence curves from Lab 3. We trained our dual-engine models across 50 epochs directly on the s390x mainframe. You can see how smoothly the validation loss drops and stabilizes at 0.041, proving that the model generalizes robustly without overfitting."
+      },
+      {
+        id: 16,
+        time: 198,
+        title: "10.84ms End-to-End Latency Profile",
+        badge: "PART 2 • LATENCY AUDIT",
+        desc: "Preprocessing 0.82ms, Dual ML 5.41ms, Guardrails 0.21ms, Total 10.84ms.",
+        image: "assets/chart_agent_latency.png",
+        script: "This is our microsecond latency profiling chart. Streaming normalization takes 0.82 milliseconds; ML inference takes 5.41 milliseconds; guardrail checks take 0.21 milliseconds; SOP retrieval takes 3.20 milliseconds; and block hashing takes 0.42 milliseconds. Total latency is just 10.84 milliseconds!"
+      },
+
+      /* PART 3: LIVE SOFTWARE PROTOTYPE DEMONSTRATION */
+      {
+        id: 17,
+        time: 216,
+        title: "Live Prototype: Nominal 60FPS State",
+        badge: "PART 3 • LIVE PROTOTYPE",
+        desc: "HTML5 Canvas waveforms, tightly bounded uncertainty, zero false alarms.",
+        image: "assets/industrial_dashboard_initial.png",
+        script: "Now let us examine our live web application running on port 3000. In this nominal state, our HTML5 Canvas oscilloscopes render fluid 60 frames-per-second heart rate and motion telemetry. The conformal uncertainty bar stays between 0.02 and 0.06, confirming that the worker is safe with zero false alarms."
+      },
+      {
+        id: 18,
+        time: 234,
+        title: "Acute Trauma Distress Event Injected",
+        badge: "PART 3 • DISTRESS SPIKE",
+        desc: "Impact > 6.8g, tachycardia > 175 BPM, risk surges to 0.941 in 11ms.",
+        image: "assets/industrial_dashboard_distress.png",
+        script: "Now watch closely, judges, as we inject an acute trauma distress event into the live system! A kinetic impact force spikes past 6.8g, and the heart rate suddenly shoots over 175 BPM. Look at how the dual-engine risk score leaps to 0.941, the conformal bounds widen, and our system initiates Level 3 emergency escalation in under 11 milliseconds!"
+      },
+      {
+        id: 19,
+        time: 255,
+        title: "Enterprise Fleet Telemetry Console",
+        badge: "PART 3 • ENTERPRISE FLEET",
+        desc: "Site-wide health indices and dynamic multi-sensor risk attribution.",
+        image: "assets/industrial_dashboard_overview.png",
+        script: "In this enterprise view, site safety supervisors can monitor the entire workforce across plant zones. We display real-time sensor health indices, Population Stability Index drift values, and dynamic feature attributions: 40% kinematics, 25% cardiac stress, and 20% acoustics."
+      },
+      {
+        id: 20,
+        time: 275,
+        title: "SHA-256 Cryptographic Audit Ledger",
+        badge: "PART 3 • AUDIT LEDGER",
+        desc: "Immutable block hash chains for EU AI Act High-Risk AI compliance.",
+        image: "assets/industrial_audit_ledger_modal.png",
+        script: "Here, we open the live cryptographic audit ledger modal. Every prediction and emergency action is permanently recorded in a SHA-256 Merkle block chain. This provides immutable mathematical proof for EU AI Act High-Risk AI compliance."
+      },
+      {
+        id: 21,
+        time: 290,
+        title: "Conclusion & 53/53 Tests Verified",
+        badge: "PART 3 • CONCLUSION",
+        desc: "Provenance: 3ab4e534d934ccd1, 100% tests passed on LinuxONE s390x.",
+        image: "assets/slide_01.png",
+        script: "With 53 out of 53 passing automated tests and model provenance fingerprint 3ab4e534d934ccd1, our team has proven that real-time AI can be trustworthy, deterministic, and life-saving on IBM LinuxONE. Thank you so much, respected judges, for your time and encouragement!"
+      }
+    ];
+
+    const TOTAL_DURATION = 300; // Exactly 5 minutes (300 seconds)
+
+    /* =====================================================================
+       STATE MANAGEMENT
+       ===================================================================== */
+    let isPlaying = false;
+    let currentTime = 0;
+    let playbackSpeed = 1.0;
+    let voiceSpeedMultiplier = 1.05;
+    let studentPitch = 1.08;
+    let voiceEnabled = true;
+    let sfxEnabled = true;
+    let activeSceneIndex = -1;
+    let lastTimestamp = 0;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let selectedVoice = null;
+    let currentVideoMode = 'master'; // 'master' or 'prototype'
+
+    // Preloaded Images
+    const imageCache = {};
+    SCENES.forEach(scene => {
+      if (!imageCache[scene.image]) {
+        const img = new Image();
+        img.src = scene.image;
+        imageCache[scene.image] = img;
+      }
+    });
+
+    // Audio Context for Native Sound Effects
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    /* Web Audio Sound Synthesizers */
+    function playHeartbeatSFX(rapid = false) {
+      if (!sfxEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(rapid ? 115 : 80, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(35, ctx.currentTime + 0.12);
+        gain.setValueAtTime(rapid ? 0.35 : 0.18, ctx.currentTime);
+        gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.13);
+      } catch (e) {}
+    }
+
+    function playAcuteDistressSFX() {
+      if (!sfxEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(440, ctx.currentTime + 0.35);
+        gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.36);
+      } catch (e) {}
+    }
+
+    function playChimeSFX() {
+      if (!sfxEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.1); // A5
+        gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.41);
+      } catch (e) {}
+    }
+
+    /* =====================================================================
+       DOM ELEMENTS
+       ===================================================================== */
+    const canvas = document.getElementById('demoCanvas');
+    const prototypeVideoImg = document.getElementById('prototypeVideoImg');
+    const ctx = canvas.getContext('2d');
+    const welcomeOverlay = document.getElementById('welcomeOverlay');
+    const centerOverlay = document.getElementById('centerOverlay');
+    const overlayBtnIcon = document.getElementById('overlayBtnIcon');
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = document.getElementById('playIcon');
+    const timeDisplay = document.getElementById('timeDisplay');
+    const scrubberContainer = document.getElementById('scrubberContainer');
+    const scrubberProgress = document.getElementById('scrubberProgress');
+    const scrubberHandle = document.getElementById('scrubberHandle');
+    const captionText = document.getElementById('captionText');
+    const captionMeta = document.getElementById('captionMeta');
+    const chapterList = document.getElementById('chapterList');
+    const teleprompterList = document.getElementById('teleprompterList');
+    const waveformIndicator = document.getElementById('waveformIndicator');
+    const voiceToggleBtn = document.getElementById('voiceToggleBtn');
+    const sfxToggleBtn = document.getElementById('sfxToggleBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const voiceSelect = document.getElementById('voiceSelect');
+    const btnModeMaster = document.getElementById('btnModeMaster');
+    const btnModePrototype = document.getElementById('btnModePrototype');
+
+    /* =====================================================================
+       PUBLIC ONBOARDING & INSTANT START
+       ===================================================================== */
+    function startPublicDemo() {
+      getAudioContext();
+      welcomeOverlay.classList.add('hidden');
+      if (!isPlaying) {
+        togglePlay();
+      }
+    }
+
+    function switchVideoMode(mode) {
+      currentVideoMode = mode;
+      btnModeMaster.classList.toggle('active', mode === 'master');
+      btnModePrototype.classList.toggle('active', mode === 'prototype');
+
+      if (mode === 'prototype') {
+        canvas.style.display = 'none';
+        prototypeVideoImg.style.display = 'block';
+        captionMeta.innerText = "LIVE SOFTWARE PROTOTYPE SCREEN RECORDING (.WEBP)";
+        captionText.innerText = "Real-time 60FPS sensor waveforms, dual-engine conformal bounds, acute trauma distress reaction, and SHA-256 tamper-evident cryptographic ledger modal running live on IBM LinuxONE s390x.";
+      } else {
+        prototypeVideoImg.style.display = 'none';
+        canvas.style.display = 'block';
+        updateActiveScene(true);
+        renderFrame();
+      }
+    }
+
+    /* =====================================================================
+       SPEECH SYNTHESIS ENGINE WITH INDIAN STUDENT VOICE PRIORITIZATION
+       ===================================================================== */
+    let synth = window.speechSynthesis;
+    let currentUtterance = null;
+    let availableVoices = [];
+
+    function populateVoiceList() {
+      if (!synth) return;
+      const allVoices = synth.getVoices();
+      availableVoices = allVoices;
+      voiceSelect.innerHTML = '';
+
+      const indianVoices = allVoices.filter(v => 
+        v.lang === 'en-IN' || 
+        v.lang.startsWith('en-IN') || 
+        v.name.toLowerCase().includes('india') || 
+        v.name.toLowerCase().includes('ravi') || 
+        v.name.toLowerCase().includes('heera') || 
+        v.name.toLowerCase().includes('neerja') ||
+        v.name.toLowerCase().includes('prabhat')
+      );
+
+      if (indianVoices.length > 0) {
+        selectedVoice = indianVoices[0];
+        indianVoices.forEach((voice) => {
+          const opt = document.createElement('option');
+          opt.value = allVoices.indexOf(voice);
+          opt.innerText = `🇮🇳 ${voice.name} (Indian Student Presenter)`;
+          if (voice === selectedVoice) opt.selected = true;
+          voiceSelect.appendChild(opt);
+        });
+      } else {
+        selectedVoice = allVoices.find(v => v.lang.startsWith('en')) || allVoices[0];
+        const opt = document.createElement('option');
+        opt.value = "student_tuned";
+        opt.innerText = "🇮🇳 Indian Student Cadence (Synthesized en-IN)";
+        opt.selected = true;
+        voiceSelect.appendChild(opt);
+      }
+
+      allVoices.filter(v => v.lang.startsWith('en') && !indianVoices.includes(v)).forEach((voice) => {
+        const opt = document.createElement('option');
+        opt.value = allVoices.indexOf(voice);
+        opt.innerText = `🎙️ ${voice.name} (${voice.lang})`;
+        voiceSelect.appendChild(opt);
+      });
+    }
+
+    if (synth) {
+      populateVoiceList();
+      if (synth.onvoiceschanged !== undefined) {
+        synth.onvoiceschanged = populateVoiceList;
+      }
+    }
+
+    function onVoiceChange() {
+      const idx = voiceSelect.value;
+      if (idx !== 'student_tuned' && availableVoices[idx]) {
+        selectedVoice = availableVoices[idx];
+      }
+      if (isPlaying && activeSceneIndex >= 0) {
+        speakScene(SCENES[activeSceneIndex]);
+      }
+    }
+
+    function onRateChange(val) {
+      voiceSpeedMultiplier = parseFloat(val);
+      if (isPlaying && activeSceneIndex >= 0) {
+        speakScene(SCENES[activeSceneIndex]);
+      }
+    }
+
+    function speakScene(scene) {
+      if (!voiceEnabled || !synth || currentVideoMode !== 'master') {
+        waveformIndicator.classList.remove('active');
+        return;
+      }
+
+      synth.cancel();
+      const text = scene.script;
+      currentUtterance = new SpeechSynthesisUtterance(text);
+      currentUtterance.rate = 1.05 * voiceSpeedMultiplier * (playbackSpeed > 1.2 ? 1.15 : 1.0);
+      currentUtterance.pitch = studentPitch;
+
+      if (selectedVoice) {
+        currentUtterance.voice = selectedVoice;
+      }
+
+      currentUtterance.onstart = () => {
+        waveformIndicator.classList.add('active');
+      };
+      currentUtterance.onend = () => {
+        waveformIndicator.classList.remove('active');
+      };
+      currentUtterance.onerror = () => {
+        waveformIndicator.classList.remove('active');
+      };
+
+      synth.speak(currentUtterance);
+    }
+
+    function testVoiceSample() {
+      getAudioContext();
+      if (!synth) return;
+      synth.cancel();
+      const sample = new SpeechSynthesisUtterance("Respected judges, greetings from Team NEUROBOTS! We built SENTINEX on IBM LinuxONE s390x to save worker lives. Anticipate the risk, act before it escalates!");
+      sample.rate = 1.05 * voiceSpeedMultiplier;
+      sample.pitch = studentPitch;
+      if (selectedVoice) sample.voice = selectedVoice;
+      sample.onstart = () => waveformIndicator.classList.add('active');
+      sample.onend = () => waveformIndicator.classList.remove('active');
+      synth.speak(sample);
+    }
+
+    function replayCurrentVoice() {
+      if (activeSceneIndex >= 0) {
+        speakScene(SCENES[activeSceneIndex]);
+      }
+    }
+
+    /* =====================================================================
+       INITIALIZE CHAPTER LIST & TELEPROMPTER SCRIPT
+       ===================================================================== */
+    function renderChapterItems() {
+      chapterList.innerHTML = '';
+      teleprompterList.innerHTML = '';
+
+      SCENES.forEach((scene, index) => {
+        // 1. Chapter item in sidebar
+        const item = document.createElement('div');
+        item.className = 'chapter-item' + (index === 0 ? ' active' : '');
+        item.id = `chap-${index}`;
+        item.onclick = () => {
+          if (currentVideoMode !== 'master') switchVideoMode('master');
+          jumpTo(scene.time);
+        };
+
+        const m = String(Math.floor(scene.time / 60)).padStart(2, '0');
+        const s = String(scene.time % 60).padStart(2, '0');
+
+        item.innerHTML = `
+          <div class="chap-time">${m}:${s} &bull; ${scene.badge}</div>
+          <div class="chap-title">${scene.title}</div>
+          <div class="chap-desc">${scene.desc}</div>
+        `;
+        chapterList.appendChild(item);
+
+        // 2. Teleprompter script block
+        const block = document.createElement('div');
+        block.className = 'script-scene-block' + (index === 0 ? ' active' : '');
+        block.id = `script-block-${index}`;
+        block.onclick = () => {
+          if (currentVideoMode !== 'master') switchVideoMode('master');
+          jumpTo(scene.time);
+        };
+        block.innerHTML = `
+          <div class="script-header">
+            <span>${scene.title.toUpperCase()} (${m}:${s})</span>
+            <span>${scene.badge}</span>
+          </div>
+          <div>${scene.script}</div>
+        `;
+        teleprompterList.appendChild(block);
+      });
+    }
+    renderChapterItems();
+
+    function switchTab(tab) {
+      const isChapters = tab === 'chapters';
+      document.getElementById('tabChaptersBtn').classList.toggle('active', isChapters);
+      document.getElementById('tabScriptBtn').classList.toggle('active', !isChapters);
+      document.getElementById('tabChapters').classList.toggle('active', isChapters);
+      document.getElementById('tabScript').classList.toggle('active', !isChapters);
+    }
+
+    function copyFullScript() {
+      const fullText = SCENES.map(s => {
+        const m = String(Math.floor(s.time / 60)).padStart(2, '0');
+        const sec = String(s.time % 60).padStart(2, '0');
+        return `[${m}:${sec}] ${s.title.toUpperCase()} (${s.badge})\n${s.script}\n`;
+      }).join('\n');
+
+      navigator.clipboard.writeText(fullText).then(() => {
+        alert("Full student presentation transcript copied to clipboard!");
+      });
+    }
+
+    /* =====================================================================
+       PLAYER CONTROLS & TRANSPORT
+       ===================================================================== */
+    function togglePlay() {
+      getAudioContext();
+      isPlaying = !isPlaying;
+      if (isPlaying) {
+        lastTimestamp = performance.now();
+        centerOverlay.classList.add('hidden');
+        welcomeOverlay.classList.add('hidden');
+        playIcon.innerHTML = '&#10074;&#10074;';
+        playBtn.title = "Pause (Space)";
+        if (activeSceneIndex >= 0 && (!synth || !synth.speaking)) {
+          speakScene(SCENES[activeSceneIndex]);
+        }
+      } else {
+        centerOverlay.classList.remove('hidden');
+        playIcon.innerHTML = '&#9658;';
+        playBtn.title = "Play (Space)";
+        if (synth) synth.cancel();
+        waveformIndicator.classList.remove('active');
+      }
+    }
+
+    function jumpTo(sec) {
+      currentTime = Math.max(0, Math.min(sec, TOTAL_DURATION));
+      updateActiveScene(true);
+      renderFrame();
+      updateUI();
+      if (!isPlaying) {
+        togglePlay();
+      }
+    }
+
+    function skip(sec) {
+      jumpTo(currentTime + sec);
+    }
+
+    function restartVideo() {
+      jumpTo(0);
+      playChimeSFX();
+    }
+
+    function toggleVoice() {
+      voiceEnabled = !voiceEnabled;
+      voiceToggleBtn.classList.toggle('active', voiceEnabled);
+      if (!voiceEnabled && synth) {
+        synth.cancel();
+        waveformIndicator.classList.remove('active');
+      } else if (voiceEnabled && isPlaying && activeSceneIndex >= 0) {
+        speakScene(SCENES[activeSceneIndex]);
+      }
+    }
+
+    function toggleSFX() {
+      sfxEnabled = !sfxEnabled;
+      sfxToggleBtn.classList.toggle('active', sfxEnabled);
+    }
+
+    function changeSpeed(speed) {
+      playbackSpeed = parseFloat(speed);
+      if (synth && synth.speaking && activeSceneIndex >= 0) {
+        speakScene(SCENES[activeSceneIndex]);
+      }
+    }
+
+    function toggleFullscreen() {
+      const wrapper = document.getElementById('viewportWrapper');
+      if (!document.fullscreenElement) {
+        wrapper.requestFullscreen().catch(err => {});
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Scrubber drag / click
+    let isScrubbing = false;
+    scrubberContainer.addEventListener('mousedown', (e) => {
+      isScrubbing = true;
+      handleScrub(e);
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (isScrubbing) handleScrub(e);
+    });
+    window.addEventListener('mouseup', () => {
+      isScrubbing = false;
+    });
+
+    function handleScrub(e) {
+      const rect = scrubberContainer.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      currentTime = pct * TOTAL_DURATION;
+      updateActiveScene(true);
+      renderFrame();
+      updateUI();
+    }
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.code === 'ArrowRight') {
+        e.preventDefault();
+        skip(5);
+      } else if (e.code === 'ArrowLeft') {
+        e.preventDefault();
+        skip(-5);
+      } else if (e.code === 'KeyF') {
+        e.preventDefault();
+        toggleFullscreen();
+      }
+    });
+
+    /* =====================================================================
+       SCENE TRACKING & UI UPDATES
+       ===================================================================== */
+    function updateActiveScene(forced = false) {
+      let idx = 0;
+      for (let i = 0; i < SCENES.length; i++) {
+        if (currentTime >= SCENES[i].time) {
+          idx = i;
+        } else {
+          break;
+        }
+      }
+
+      if (idx !== activeSceneIndex || forced) {
+        activeSceneIndex = idx;
+        const curScene = SCENES[idx];
+        
+        // Update Subtitle Banner
+        const nextTime = (idx + 1 < SCENES.length) ? SCENES[idx + 1].time : TOTAL_DURATION;
+        captionMeta.innerText = `${curScene.title.toUpperCase()} (${formatTime(curScene.time)} - ${formatTime(nextTime)})`;
+        captionText.innerText = curScene.script;
+
+        // Highlight active chapter
+        document.querySelectorAll('.chapter-item').forEach((el, i) => {
+          el.classList.toggle('active', i === idx);
+        });
+        const activeEl = document.getElementById(`chap-${idx}`);
+        if (activeEl) {
+          activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Highlight active teleprompter block
+        document.querySelectorAll('.script-scene-block').forEach((el, i) => {
+          el.classList.toggle('active', i === idx);
+        });
+        const activeScriptEl = document.getElementById(`script-block-${idx}`);
+        if (activeScriptEl) {
+          activeScriptEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Trigger Spoken Narration
+        if (isPlaying || forced) {
+          speakScene(curScene);
+        }
+
+        // Trigger Sound FX
+        if (curScene.id === 18) {
+          playAcuteDistressSFX();
+        } else if (curScene.id === 1) {
+          playChimeSFX();
+        }
+      }
+    }
+
+    function formatTime(sec) {
+      const m = String(Math.floor(sec / 60)).padStart(2, '0');
+      const s = String(Math.floor(sec % 60)).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateUI() {
+      const curFormatted = formatTime(currentTime);
+      const totalFormatted = formatTime(TOTAL_DURATION);
+      timeDisplay.innerText = `${curFormatted} / ${totalFormatted}`;
+
+      const pct = (currentTime / TOTAL_DURATION) * 100;
+      scrubberProgress.style.width = `${pct}%`;
+      scrubberHandle.style.left = `${pct}%`;
+    }
+
+    /* =====================================================================
+       CINEMATIC VIDEO RENDERING ENGINE (1280x720 60FPS)
+       ===================================================================== */
+    let ecgTick = 0;
+    let heartbeatTimer = 0;
+
+    function renderFrame() {
+      if (currentVideoMode !== 'master') return;
+
+      const W = canvas.width;
+      const H = canvas.height;
+
+      // Clear Canvas
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(0, 0, W, H);
+
+      const scene = SCENES[activeSceneIndex >= 0 ? activeSceneIndex : 0];
+      const img = imageCache[scene.image];
+
+      // 1. Draw Slide with Subtle Pan & Zoom (Ken Burns Effect)
+      if (img && img.complete && img.naturalWidth > 0) {
+        const nextSceneTime = (activeSceneIndex + 1 < SCENES.length) ? SCENES[activeSceneIndex + 1].time : TOTAL_DURATION;
+        const sceneDuration = Math.max(1, nextSceneTime - scene.time);
+        const sceneProgress = Math.min(1, Math.max(0, (currentTime - scene.time) / sceneDuration));
+
+        const scale = 1.0 + (sceneProgress * 0.035);
+        const panX = Math.sin(sceneProgress * Math.PI) * 12;
+        const panY = (sceneProgress - 0.5) * 6;
+
+        ctx.save();
+        ctx.translate(W / 2 + panX, H / 2 + panY);
+        ctx.scale(scale, scale);
+
+        const imgRatio = img.naturalWidth / img.naturalHeight;
+        const canvasRatio = W / H;
+        let drawW, drawH;
+
+        if (imgRatio > canvasRatio) {
+          drawW = W;
+          drawH = W / imgRatio;
+        } else {
+          drawH = H;
+          drawW = H * imgRatio;
+        }
+
+        ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
+        ctx.restore();
+      } else {
+        ctx.fillStyle = "#0a0f1d";
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = "#60a5fa";
+        ctx.font = "bold 26px 'IBM Plex Sans'";
+        ctx.textAlign = "center";
+        ctx.fillText(scene.title, W / 2, H / 2);
+      }
+
+      // 2. Cinematic Vignette & Edge Shadows
+      const grad = ctx.createLinearGradient(0, 0, 0, H);
+      grad.addColorStop(0, "rgba(7, 11, 20, 0.72)");
+      grad.addColorStop(0.15, "rgba(7, 11, 20, 0.0)");
+      grad.addColorStop(0.72, "rgba(7, 11, 20, 0.0)");
+      grad.addColorStop(1, "rgba(7, 11, 20, 0.88)");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // 3. Top Broadcast HUD Bar
+      ctx.fillStyle = "rgba(10, 15, 29, 0.88)";
+      ctx.fillRect(24, 20, W - 48, 44);
+      ctx.strokeStyle = "rgba(30, 41, 59, 0.8)";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(24, 20, W - 48, 44);
+
+      // Top Brand
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 15px 'IBM Plex Sans'";
+      ctx.textAlign = "left";
+      ctx.fillText("SENTINEX • Team NEUROBOTS (IBM LinuxONE)", 42, 48);
+
+      // Stage Badge
+      ctx.fillStyle = "rgba(245, 158, 11, 0.25)";
+      ctx.fillRect(400, 28, 220, 28);
+      ctx.strokeStyle = "#f59e0b";
+      ctx.strokeRect(400, 28, 220, 28);
+      ctx.fillStyle = "#fde68a";
+      ctx.font = "bold 11px 'IBM Plex Mono'";
+      ctx.textAlign = "center";
+      ctx.fillText(scene.badge, 510, 46);
+
+      // Live Mainframe Stats HUD (Top Right)
+      ctx.fillStyle = "#00d3f9";
+      ctx.font = "600 12px 'IBM Plex Mono'";
+      ctx.textAlign = "right";
+      const isDistress = (scene.id === 18);
+      const latencyStr = isDistress ? "LATENCY: 11.20ms • RISK: 0.941 (CRITICAL)" : "LATENCY: 10.84ms • RISK: 0.041 (NOMINAL)";
+      ctx.fillText(latencyStr, W - 42, 48);
+
+      // 4. Live ECG & Kinematics Waveform Oscilloscope Inset (Scenes 17, 18, 19)
+      if (scene.id >= 17 && scene.id <= 19) {
+        drawTelemetryHUD(W, H, isDistress);
+      }
+
+      // 5. Lower Third Broadcast Banner
+      drawLowerThird(W, H, scene);
+    }
+
+    /* Lower-Third Caption Card */
+    function drawLowerThird(W, H, scene) {
+      const bannerH = 78;
+      const bannerY = H - bannerH - 24;
+
+      ctx.fillStyle = "rgba(7, 11, 20, 0.92)";
+      ctx.fillRect(24, bannerY, W - 48, bannerH);
+      ctx.strokeStyle = "rgba(30, 41, 59, 0.9)";
+      ctx.strokeRect(24, bannerY, W - 48, bannerH);
+
+      // Accent Left Bar
+      ctx.fillStyle = (scene.id === 18) ? "#ef4444" : "#f59e0b";
+      ctx.fillRect(24, bannerY, 6, bannerH);
+
+      // Scene Title
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 16px 'IBM Plex Sans'";
+      ctx.textAlign = "left";
+      ctx.fillText(scene.title, 44, bannerY + 30);
+
+      // Scene Subtitle Description
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "400 13px 'IBM Plex Sans'";
+      ctx.fillText(scene.desc, 44, bannerY + 54);
+
+      // Watermark Stamp
+      ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+      ctx.font = "600 11px 'IBM Plex Mono'";
+      ctx.textAlign = "right";
+      ctx.fillText("EU AI ACT COMPLIANT • SHA: 3ab4e534d934ccd1", W - 42, bannerY + 46);
+    }
+
+    /* Live Oscilloscope Overlay */
+    function drawTelemetryHUD(W, H, isDistress) {
+      const boxW = 320;
+      const boxH = 110;
+      const boxX = W - boxW - 36;
+      const boxY = H - boxH - 120;
+
+      ctx.fillStyle = "rgba(10, 15, 29, 0.92)";
+      ctx.fillRect(boxX, boxY, boxW, boxH);
+      ctx.strokeStyle = isDistress ? "#ef4444" : "#24a148";
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(boxX, boxY, boxW, boxH);
+
+      // Header
+      ctx.fillStyle = isDistress ? "#fca5a5" : "#86efac";
+      ctx.font = "bold 11px 'IBM Plex Mono'";
+      ctx.textAlign = "left";
+      ctx.fillText(isDistress ? "⚠ HIGH DISTRESS DETECTED (HR: 178 BPM)" : "● NOMINAL PHYSIOLOGY (HR: 72 BPM)", boxX + 12, boxY + 20);
+
+      // Oscilloscope Grid & Baseline
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(boxX + 12, boxY + 60);
+      ctx.lineTo(boxX + boxW - 12, boxY + 60);
+      ctx.stroke();
+
+      // ECG Waveform Path
+      ctx.strokeStyle = isDistress ? "#ef4444" : "#22c55e";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+
+      const waveW = boxW - 24;
+      const speed = isDistress ? 6 : 3;
+      ecgTick += speed;
+
+      for (let x = 0; x < waveW; x++) {
+        const t = (x + ecgTick) % 120;
+        let yOffset = 0;
+        if (t > 40 && t < 48) yOffset = -8;
+        else if (t >= 48 && t < 52) yOffset = 6;
+        else if (t >= 52 && t < 58) yOffset = -34;
+        else if (t >= 58 && t < 64) yOffset = 14;
+        else if (t >= 74 && t < 86) yOffset = -12;
+
+        const plotX = boxX + 12 + x;
+        const plotY = boxY + 65 + yOffset;
+        if (x === 0) ctx.moveTo(plotX, plotY);
+        else ctx.lineTo(plotX, plotY);
+      }
+      ctx.stroke();
+
+      // Heartbeat sound pulse
+      heartbeatTimer++;
+      if (heartbeatTimer % (isDistress ? 28 : 65) === 0) {
+        playHeartbeatSFX(isDistress);
+      }
+    }
+
+    /* =====================================================================
+       MAIN 60FPS ANIMATION LOOP
+       ===================================================================== */
+    function animationLoop(timestamp) {
+      if (isPlaying && currentVideoMode === 'master') {
+        const deltaSec = (timestamp - lastTimestamp) / 1000;
+        lastTimestamp = timestamp;
+
+        currentTime += deltaSec * playbackSpeed;
+        if (currentTime >= TOTAL_DURATION) {
+          currentTime = TOTAL_DURATION;
+          togglePlay(); // Pause at end
+        }
+
+        updateActiveScene();
+        updateUI();
+      }
+
+      renderFrame();
+      requestAnimationFrame(animationLoop);
+    }
+
+    // Start Animation Loop
+    lastTimestamp = performance.now();
+    updateActiveScene();
+    updateUI();
+    requestAnimationFrame(animationLoop);
+
+    /* =====================================================================
+       DIRECT VIDEO FILE EXPORT ENGINE (MediaRecorder API)
+       Exports real .webm video file right in the browser!
+       ===================================================================== */
+    function exportVideoRecording() {
+      if (mediaRecorder && mediaRecorder.state === "recording") {
+        mediaRecorder.stop();
+        exportBtn.innerHTML = "&#128190; Record &amp; Export (.webm)";
+        exportBtn.style.background = "";
+        return;
+      }
+
+      exportBtn.innerHTML = "⏳ Recording Video Stream... (Please Wait)";
+      exportBtn.style.background = "#b91c1c";
+
+      recordedChunks = [];
+      const stream = canvas.captureStream(30);
+
+      try {
+        mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+      } catch (e) {
+        mediaRecorder = new MediaRecorder(stream);
+      }
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "SENTINEX_5Min_Indian_Student_Competition_Demo.webm";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        exportBtn.innerHTML = "✓ Video Downloaded! (.webm)";
+        exportBtn.style.background = "#24a148";
+        setTimeout(() => {
+          exportBtn.innerHTML = "&#128190; Record &amp; Export (.webm)";
+          exportBtn.style.background = "";
+        }, 4000);
+      };
+
+      // Jump to beginning and start recording
+      jumpTo(0);
+      mediaRecorder.start();
+      if (!isPlaying) togglePlay();
+
+      alert("Video recording started! The demonstration is playing and capturing frame-by-frame. When you want to save the video, click the Export button again or let it complete!");
+    }
+  </script>
+
+</body>
+</html>
